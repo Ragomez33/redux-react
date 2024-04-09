@@ -1,25 +1,30 @@
 import { useEffect } from 'react';
 // import { connect } from 'react-redux';
-import { Col } from "antd";
+import { Col, Spin } from "antd";
 import { Searcher } from './components/Searcher';
 import { PokemonList } from './components/PokemonList';
 import { getPokemons, getPokemonDetails } from './api';
 import Logo from './statics/logo.svg';
 import './App.css';
-import { setPokemons } from './actions';
+import { setPokemons, setLoading } from './actions';
 import { useSelector, useDispatch } from 'react-redux';
+
+
 function App() {
 
   const pokemons = useSelector((state) => state.pokemons);
   const dispatch = useDispatch()
+  const loading = useSelector((state) => state.loading);
+
   useEffect(() => {
     const fetchPokemons = async () => {
-
+      dispatch(setLoading(true));
       const pokemonsRes = await getPokemons();
 
-      const pokemonWithDetails = await Promise.all(pokemonsRes.map((pokemon) => getPokemonDetails(pokemon)))
-      
+      const pokemonWithDetails = await Promise.all(pokemonsRes?.map((pokemon) => getPokemonDetails(pokemon)))
+
       dispatch(setPokemons(pokemonWithDetails));
+      dispatch(setLoading(false));
     };
 
     fetchPokemons();
@@ -34,7 +39,16 @@ function App() {
       <Col span={8} offset={8}>
         <Searcher />
       </Col>
-      <PokemonList pokemons={pokemons} />
+      {loading ? (
+        <Col style={{
+          marginTop: '3rem'
+        }}>
+          <Spin spinning size='large' />
+        </Col>
+      ) : (
+        <PokemonList pokemons={pokemons} />
+      )}
+
     </div>
   );
 }

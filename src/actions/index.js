@@ -1,4 +1,4 @@
-import { SET_POKEMONS } from "./types";
+import { SET_LOADING, SET_POKEMONS } from "./types";
 import { getPokemonDetails } from '../api';
 
 export const setPokemons = (payload) => ({
@@ -6,10 +6,14 @@ export const setPokemons = (payload) => ({
     payload,
 })
 
+export const setLoading = (payload) => ({
+    type: SET_LOADING,
+    payload,
+})
 // Action creator en redux thunk
 export const getPokemonsWithDetails = (pokemons = []) => async (dispatch) => {
     const pokemonsDetailed = await Promise.all(
-        pokemons.map(async pokemon => await getPokemonDetails(pokemon))
+        pokemons?.map(async pokemon => await getPokemonDetails(pokemon))
     );
     dispatch(setPokemons(pokemonsDetailed))
 } 
