@@ -9,7 +9,6 @@ import './App.css';
 import { setPokemons, setLoading } from './actions';
 import { useSelector, useDispatch } from 'react-redux';
 
-
 function App() {
 
   const pokemons = useSelector((state) => state.pokemons);

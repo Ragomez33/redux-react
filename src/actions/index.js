@@ -1,4 +1,4 @@
-import { SET_LOADING, SET_POKEMONS } from "./types";
+import { SET_LOADING, SET_POKEMONS, SET_FAVORITE } from "./types";
 import { getPokemonDetails } from '../api';
 
 export const setPokemons = (payload) => ({
@@ -17,3 +17,8 @@ export const getPokemonsWithDetails = (pokemons = []) => async (dispatch) => {
     );
     dispatch(setPokemons(pokemonsDetailed))
 } 
+
+export const setFavorite = (payload) => ({
+    type: SET_FAVORITE,
+    payload,
+})
